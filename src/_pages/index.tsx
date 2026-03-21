@@ -1,0 +1,5 @@
+export * from './lib/guard/private/PrivateRoute'
+export * from './MainPage/index'
+export * from './Auth/index'
+export * from './Constructor/ui/Constructor'
+export * from './Test/index'
