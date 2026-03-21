@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useReportStore } from "@/entities/report/model/reportStore";
 import { toChartData } from "@/entities/report/lib/transform";
 import { BarChartBlock } from "@/shared/ui/charts/BarChart";
-import { Card, CardContent, Typography } from "@mui/material";
+import { RadarChartBlock } from "@/shared/ui/charts/RadarChart";
+import { Card, CardContent, Typography, Box, Grid } from "@mui/material";
 
 export default function PsychologistReportPage() {
   const { metrics, fetchReport } = useReportStore();
@@ -16,17 +17,61 @@ export default function PsychologistReportPage() {
   const data = toChartData(metrics);
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h5">Отчёт для психолога</Typography>
+    <Box className="report-page">
+      <Box className="report-header">
+        <Typography variant="h4" className="report-title">
+          Отчёт для психолога
+        </Typography>
+        <Typography variant="body1" className="report-subtitle">
+          Показатели метрик клиента
+        </Typography>
+      </Box>
 
-        <BarChartBlock data={data} />
-        {data.map((item) => (
-          <Typography key={item.name}>
-            {item.name}: {item.value}%
-          </Typography>
-        ))}
-      </CardContent>
-    </Card>
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Card className="report-card">
+            <CardContent>
+              <Typography variant="h6" className="card-title">
+                Диаграмма показателей
+              </Typography>
+              <RadarChartBlock data={data} />
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Card className="report-card">
+            <CardContent>
+              <Typography variant="h6" className="card-title">
+                Сравнение метрик
+              </Typography>
+              <BarChartBlock data={data} />
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
+          <Card className="report-card">
+            <CardContent>
+              <Typography variant="h6" className="card-title">
+                Числовые значения
+              </Typography>
+              <Box className="metrics-table">
+                <Box className="metrics-table-header">
+                  <Typography>Метрика</Typography>
+                  <Typography>Значение</Typography>
+                </Box>
+                {data.map((item) => (
+                  <Box key={item.name} className="metrics-table-row">
+                    <Typography className="metric-name">{item.name}</Typography>
+                    <Typography className="metric-value">{item.value}%</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
