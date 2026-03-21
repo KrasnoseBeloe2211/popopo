@@ -3,6 +3,7 @@ import type { ILoginForm, IRegisterForm } from '../types/types'
 
 export const auth = async (e: ILoginForm) => {
 	const response = await apiController<ILoginForm>(
+		'http://26.142.149.241:8080',
 		'POST',
 		'/api/login/access',
 		e,
@@ -14,6 +15,11 @@ export const auth = async (e: ILoginForm) => {
 }
 
 export const register = async (e: IRegisterForm) => {
-	const response = await apiController<IRegisterForm>('POST', '/register', e)
+	const response = await apiController<IRegisterForm>(
+		'http://26.142.149.241:8080',
+		'POST',
+		'/register',
+		e,
+	)
 	if (response) return response
 }

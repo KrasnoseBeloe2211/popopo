@@ -5,6 +5,7 @@ import { apiController } from '@/shared/config/api/api'
 export const getTests = async (psychologistId: string) => {
 	try {
 		const response = await apiController<Test[]>(
+			undefined,
 			'GET',
 			`/api/tests?psychologist_id=${psychologistId}`,
 		)
@@ -16,7 +17,7 @@ export const getTests = async (psychologistId: string) => {
 
 export const getTestById = async (id: string) => {
 	try {
-		const response = await apiController<Test>('GET', `/tests/${id}`)
+		const response = await apiController<Test>(undefined, 'GET', `/tests/${id}`)
 		return response.data
 	} catch (error) {
 		console.error('Ошибка загрузки теста:', error)
@@ -26,7 +27,12 @@ export const getTestById = async (id: string) => {
 
 export const createTest = async (testData: Omit<Test, 'id'>) => {
 	try {
-		const response = await apiController<Test>('POST', '/api/tests', testData)
+		const response = await apiController<Test>(
+			undefined,
+			'POST',
+			'/api/tests',
+			testData,
+		)
 		TestsStore.getState().addTest(response.data)
 	} catch (error) {
 		console.error('Ошибка создания теста:', error)
@@ -35,7 +41,12 @@ export const createTest = async (testData: Omit<Test, 'id'>) => {
 
 export const updateTest = async (id: string, data: Partial<Test>) => {
 	try {
-		const response = await apiController<Test>('PUT', `/tests/${id}`, data)
+		const response = await apiController<Test>(
+			undefined,
+			'PUT',
+			`/tests/${id}`,
+			data,
+		)
 		TestsStore.getState().updateTest(id, response.data)
 	} catch (error) {
 		console.error('Ошибка обновления теста:', error)
@@ -44,7 +55,11 @@ export const updateTest = async (id: string, data: Partial<Test>) => {
 
 export const deleteTest = async (id: string) => {
 	try {
-		const response = await apiController<void>('DELETE', `/tests/${id}`)
+		const response = await apiController<void>(
+			undefined,
+			'DELETE',
+			`/tests/${id}`,
+		)
 		TestsStore.getState().deleteTest(id)
 	} catch (error) {
 		console.error('Ошибка удаления теста:', error)

@@ -14,7 +14,7 @@ interface IResponse<T> {
 	error?: string
 }
 
-const api = axios.create({ baseURL: baseUrl, withCredentials: true })
+const api = axios.create({ withCredentials: true })
 
 api.interceptors.request.use((config: any) => {
 	const access_token = localStorage.getItem('access_token')
@@ -64,14 +64,20 @@ export const refreshToken = async (access_token: string | null) => {
 		throw new Error('Токен доступа отсутствует')
 	}
 
-	const response: any = await apiController('POST', '/login/refresh', {
-		access_token: access_token,
-	})
+	const response: any = await apiController(
+		'http://26.142.149.241:8080',
+		'POST',
+		'/login/refresh',
+		{
+			access_token: access_token,
+		},
+	)
 
 	return response.data.access_token
 }
 
 export const apiController = async <T>(
+	base: string = baseUrl,
 	method: Method,
 	endpoint: string,
 	data?: object,
@@ -81,7 +87,7 @@ export const apiController = async <T>(
 ): Promise<IResponse<T>> => {
 	const response = await api.request<IResponse<T>>({
 		method,
-		url: endpoint,
+		url: base + endpoint,
 		data,
 		params,
 		responseType,
@@ -89,4 +95,3 @@ export const apiController = async <T>(
 	})
 	return response.data
 }
-
