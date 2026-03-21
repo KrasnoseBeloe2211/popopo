@@ -17,6 +17,7 @@
     "@mui/icons-material": "^7.3.9",
     "@mui/material": "^7.3.9",
     "@mui/material-nextjs": "^7.3.9",
+    "@qwen-code/qwen-code": "^0.12.6",
     "axios": "^1.13.6",
     "date-fns": "^4.1.0",
     "jwt-decode": "^4.0.0",

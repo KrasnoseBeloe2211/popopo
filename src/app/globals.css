@@ -47,3 +47,163 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Report Page Styles */
+.report-page {
+  padding: 32px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.report-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.report-title {
+  font-size: 36px !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  margin-bottom: 8px !important;
+}
+
+.report-subtitle {
+  color: #a0a3a8 !important;
+  font-size: 16px !important;
+}
+
+.report-card {
+  background: #1a1d24 !important;
+  border-radius: 16px !important;
+  border: 1px solid #2a2d34 !important;
+  height: 100%;
+}
+
+.card-title {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  margin-bottom: 20px !important;
+}
+
+.summary-card {
+  border-left: 4px solid #13a749 !important;
+}
+
+.summary-text {
+  color: #b3b3b3 !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.metric-name {
+  color: #ffffff !important;
+  font-size: 14px !important;
+  min-width: 120px;
+  font-weight: 500 !important;
+}
+
+.metric-bar-container {
+  flex: 1;
+  height: 8px;
+  background: #2a2d34;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.metric-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #13a749, #15c95a);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.metric-value {
+  color: #13a749 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  min-width: 45px;
+  text-align: right !important;
+}
+
+/* Metrics Table */
+.metrics-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metrics-table-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #2a2d34;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.metrics-table-header .MuiTypography-root {
+  color: #a0a3a8 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.metrics-table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #2a2d34;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.metrics-table-row:hover {
+  background: #323540;
+}
+
+.metrics-table-row .metric-name {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+}
+
+.metrics-table-row .metric-value {
+  color: #13a749 !important;
+  font-weight: 600 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .report-page {
+    padding: 20px 16px;
+  }
+
+  .report-title {
+    font-size: 28px !important;
+  }
+
+  .metric-item {
+    flex-wrap: wrap;
+  }
+
+  .metric-name {
+    min-width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .metric-value {
+    min-width: auto;
+  }
+}
