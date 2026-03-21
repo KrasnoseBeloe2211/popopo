@@ -3,7 +3,7 @@ import { apiController } from '@/shared/config/api/api'
 
 export const getUser = async () => {
 	try {
-		const response = await apiController('GET', '/profile')
+		const response = await apiController(undefined,'GET', '/profile')
 		return response
 	} catch (err) {
 		toast.error('Не удалось получить данные о пользователе')

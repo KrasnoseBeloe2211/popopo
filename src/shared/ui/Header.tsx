@@ -1,9 +1,12 @@
 'use client'
 
-import { AppBar, Toolbar, Button, Box, Typography } from '@mui/material'
+import { AppBar, Toolbar, Button, Typography } from '@mui/material'
+import { useRouter } from 'next/navigation'
 
 
 export const Header = () => {
+  const router = useRouter()
+
   return (
     <AppBar
       position="fixed"
@@ -13,26 +16,25 @@ export const Header = () => {
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography fontWeight={600}>TITANIT</Typography>
 
-        
-
         <Button
-        variant="outlined"
-        sx={{
-          borderRadius: '999px',
-          background: '#fff',
-          color: '#000',
-          textTransform: 'none',
-          border: '1px solid transparent',
-          transition: 'all 0.3s ease',
-          '&:hover': {
-            background: 'transparent',
-            color: '#ffffff',
-            border: '1px solid #ffffff'
-          }
-        }}
-      >
-        Sign up
-      </Button>
+          variant="outlined"
+          onClick={() => router.push('/login')}
+          sx={{
+            borderRadius: '999px',
+            background: '#fff',
+            color: '#000',
+            textTransform: 'none',
+            border: '1px solid transparent',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              background: 'transparent',
+              color: '#ffffff',
+              border: '1px solid #ffffff'
+            }
+          }}
+        >
+          Sign in
+        </Button>
       </Toolbar>
     </AppBar>
   )
