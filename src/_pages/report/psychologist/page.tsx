@@ -1,17 +1,21 @@
 "use client";
 
 import { useEffect } from "react";
+import { useParams } from "next/navigation";
 import { useReportStore } from "@/entities/report/model/reportStore";
 import { toChartData } from "@/entities/report/lib/transform";
 import { BarChartBlock } from "@/shared/ui/charts/BarChart";
 import { Card, CardContent, Typography } from "@mui/material";
 
 export default function Page() {
+  const { sessionId } = useParams();
   const { metrics, fetchReport } = useReportStore();
 
   useEffect(() => {
-    fetchReport();
-  }, []);
+    if (sessionId) {
+      fetchReport(sessionId as string, 'pdf', 'expert');
+    }
+  }, [sessionId, fetchReport]);
 
   const data = toChartData(metrics);
 
