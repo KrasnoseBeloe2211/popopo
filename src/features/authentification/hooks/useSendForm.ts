@@ -2,8 +2,10 @@ import { useForm } from 'react-hook-form'
 import { auth } from '../api/auth'
 import { toast } from 'react-toastify'
 import type { ILoginForm } from '../types/types'
+import { useRouter } from 'next/navigation'
 
 export const useSendForm = (data: ILoginForm) => {
+	const router = useRouter()
 	const form = useForm<ILoginForm>({
 		mode: 'onBlur',
 		defaultValues: {
@@ -21,9 +23,11 @@ export const useSendForm = (data: ILoginForm) => {
 		try {
 			const response: any = await auth(e)
 			localStorage.setItem('access_token', response.access_token)
+			localStorage.setItem('username', e.username)
 			toast.success('Авторизация прошла успешно')
 			reset()
 			clearErrors()
+			router.push('/profile')
 		} catch (err) {
 			toast.error('Не удалось авторизоваться')
 			console.error(err)

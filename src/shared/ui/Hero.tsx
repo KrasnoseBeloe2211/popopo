@@ -52,11 +52,11 @@ export const Hero = () => {
           <Typography variant="h1">
             PROFDNA
             <br />
-            <span style={{ color: '#FFFFFF' }}>JAGERMAISTER</span>
+            <span style={{ color: '#FFFFFF' }}>BY INTEAM</span>
           </Typography>
 
           <Typography sx={{ mt: 3 }}>
-            Я ЛЮБЛЮ ПИВО
+            Профориентационная платформа
           </Typography>
 
           <Button

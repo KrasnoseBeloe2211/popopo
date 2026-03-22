@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useParams } from "next/navigation";
 import { useReportStore } from "@/entities/report/model/reportStore";
 import { toChartData } from "@/entities/report/lib/transform";
 import { BarChartBlock } from "@/shared/ui/charts/BarChart";
@@ -8,11 +9,14 @@ import { RadarChartBlock } from "@/shared/ui/charts/RadarChart";
 import { Card, CardContent, Typography, Box, Grid } from "@mui/material";
 
 export default function ClientReportPage() {
+  const { sessionId } = useParams();
   const { metrics, summary, fetchReport } = useReportStore();
 
   useEffect(() => {
-    fetchReport();
-  }, []);
+    if (sessionId) {
+      fetchReport(sessionId as string, 'pdf', 'client');
+    }
+  }, [sessionId, fetchReport]);
 
   const data = toChartData(metrics);
 
@@ -61,8 +65,8 @@ export default function ClientReportPage() {
                   <Box key={item.name} className="metric-item">
                     <Typography className="metric-name">{item.name}</Typography>
                     <Box className="metric-bar-container">
-                      <Box 
-                        className="metric-bar" 
+                      <Box
+                        className="metric-bar"
                         style={{ width: `${item.value}%` }}
                       />
                     </Box>

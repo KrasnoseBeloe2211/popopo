@@ -1,23 +1,30 @@
 import { apiController } from '@/shared/config/api/api';
+import type { Method } from 'axios';
 
-// export const getReport = async () => {
-//   return await apiController<{
-//     metrics: Record<string, number>;
-//     summary: string;
-//   }>('GET', '/report');
-// };
-export const getReport = async () => {
-  return {
-    succes: true,
-    data: {
-      metrics: {
-        Logic: 80,
-        Creativity: 70,
-        Communication: 60,
-        Technical: 50,
-        Management: 90
-      },
-      summary: "Вы показали высокий уровень креативности и управления."
-    }
-  };
+export type FileChoice = 'docx' | 'pdf';
+export type PersonChoice = 'client' | 'expert';
+
+export interface IReportResponse {
+	metrics: Record<string, number>;
+	summary: string;
+}
+
+export const getReport = async (
+	sessionId: string,
+	fileChoice: FileChoice = 'pdf',
+	personChoice: PersonChoice = 'client',
+) => {
+	const endpoint = `/api/client/session/${sessionId}/result`;
+	const params = {
+		file_choice: fileChoice,
+		person_choice: personChoice,
+	};
+
+	return await apiController<IReportResponse>(
+		undefined,
+		'GET' as Method,
+		endpoint,
+		undefined,
+		params,
+	);
 };
