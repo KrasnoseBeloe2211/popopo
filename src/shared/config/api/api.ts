@@ -15,6 +15,7 @@ export interface IResponse<T> {
 }
 
 const api = axios.create({ withCredentials: true })
+export { api }
 
 api.interceptors.request.use((config: any) => {
 	if (typeof window !== 'undefined') {
@@ -40,6 +41,9 @@ api.interceptors.response.use(
 			originalRequest.retry = true
 
 			try {
+				if (typeof window === 'undefined') {
+					throw new Error('SSR')
+				}
 				const currentToken = localStorage.getItem('access_token')
 				if (!currentToken) throw new Error('Токен отсутствует')
 
@@ -52,7 +56,9 @@ api.interceptors.response.use(
 				}
 				return api(originalRequest)
 			} catch (refreshError) {
-				window.location.href = '/login'
+				if (typeof window !== 'undefined') {
+					window.location.href = '/login'
+				}
 				return Promise.reject(refreshError)
 			}
 		}
