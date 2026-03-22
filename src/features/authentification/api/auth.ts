@@ -13,13 +13,3 @@ export const auth = async (e: ILoginForm) => {
 	)
 	if (response) return response
 }
-
-export const register = async (e: IRegisterForm) => {
-	const response = await apiController<IRegisterForm>(
-		'http://26.142.149.241:8080',
-		'POST',
-		'/register',
-		e,
-	)
-	if (response) return response
-}

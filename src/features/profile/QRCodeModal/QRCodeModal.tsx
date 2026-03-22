@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
 	Dialog,
 	DialogTitle,
@@ -12,6 +12,7 @@ import {
 	Avatar,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import { api, apiController } from '@/shared/config/api/api'
 
 interface QRCodeModalProps {
 	open: boolean
@@ -23,30 +24,43 @@ interface QRCodeModalProps {
 	}
 }
 
-export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProps) => {
+export const QRCodeModal = ({
+	open,
+	onClose,
+	psychologistData,
+}: QRCodeModalProps) => {
 	const [qrCodeUrl, setQrCodeUrl] = useState<string>('')
 	const [isLoading, setIsLoading] = useState(false)
+
+	// Очистка blob URL при размонтировании
+	React.useEffect(() => {
+		return () => {
+			if (qrCodeUrl && qrCodeUrl.startsWith('blob:')) {
+				URL.revokeObjectURL(qrCodeUrl)
+			}
+		}
+	}, [qrCodeUrl])
 
 	const generateQRCode = async () => {
 		if (qrCodeUrl) return
 
 		setIsLoading(true)
 		try {
-			// Генерация QR-кода через API (не на фронте)
-			const response = await fetch('/api/generate-qr', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					url: psychologistData.publicUrl,
-				}),
-			})
+			// Запрашиваем QR-код как blob (бинарные данные)
+			const response = await apiController(
+				undefined,
+				'get',
+				'/api/qr-gen',
+				undefined,
+				{ link: psychologistData.publicUrl },
+				'blob',
+			)
 
-			if (response.ok) {
-				const data = await response.json()
-				setQrCodeUrl(data.qrCodeUrl)
-			}
+			// Создаём URL из blob
+			// apiController возвращает IResponse, нужен response.data
+			const blob = (response as any).data || response
+			const imageUrl = URL.createObjectURL(blob)
+			setQrCodeUrl(imageUrl)
 		} catch (error) {
 			console.error('Ошибка генерации QR-кода:', error)
 		} finally {
@@ -58,11 +72,19 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 		generateQRCode()
 	}
 
+	const handleClose = () => {
+		// Освобождаем память
+		if (qrCodeUrl && qrCodeUrl.startsWith('blob:')) {
+			URL.revokeObjectURL(qrCodeUrl)
+		}
+		onClose()
+	}
+
 	return (
 		<Dialog
 			open={open}
-			onClose={onClose}
-			maxWidth="sm"
+			onClose={handleClose}
+			maxWidth='sm'
 			fullWidth
 			TransitionProps={{
 				onEnter: handleOpen,
@@ -84,7 +106,7 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 				}}
 			>
 				<Typography
-					variant="h5"
+					variant='h5'
 					sx={{
 						fontWeight: 600,
 						color: '#13a749',
@@ -93,7 +115,7 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 					Визитка психолога
 				</Typography>
 				<Button
-					onClick={onClose}
+					onClick={handleClose}
 					sx={{
 						minWidth: 'auto',
 						color: '#b3b3b3',
@@ -147,7 +169,7 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 							}}
 						/>
 						<Typography
-							variant="h6"
+							variant='h6'
 							sx={{
 								fontWeight: 600,
 								color: '#ffffff',
@@ -157,7 +179,7 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 							{psychologistData.fullName}
 						</Typography>
 						<Typography
-							variant="body2"
+							variant='body2'
 							sx={{
 								color: '#13a749',
 								mt: 1,
@@ -181,12 +203,14 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 						}}
 					>
 						{isLoading ? (
-							<Typography sx={{ color: '#13a749' }}>Генерация QR-кода...</Typography>
+							<Typography sx={{ color: '#13a749' }}>
+								Генерация QR-кода...
+							</Typography>
 						) : qrCodeUrl ? (
 							<Box
-								component="img"
+								component='img'
 								src={qrCodeUrl}
-								alt="QR Code"
+								alt='QR Code'
 								sx={{
 									width: 200,
 									height: 200,
@@ -196,13 +220,15 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 								}}
 							/>
 						) : (
-							<Typography sx={{ color: '#b3b3b3' }}>Нажмите "Сгенерировать"</Typography>
+							<Typography sx={{ color: '#b3b3b3' }}>
+								Нажмите "Сгенерировать"
+							</Typography>
 						)}
 					</Box>
 				</Box>
 
 				<Typography
-					variant="caption"
+					variant='caption'
 					sx={{
 						color: '#666',
 						mt: 2,
@@ -220,9 +246,15 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 				}}
 			>
 				<Button
-					onClick={handleOpen}
+					onClick={() => {
+						if (qrCodeUrl && qrCodeUrl.startsWith('blob:')) {
+							URL.revokeObjectURL(qrCodeUrl)
+						}
+						setQrCodeUrl('')
+						handleOpen()
+					}}
 					disabled={isLoading}
-					variant="contained"
+					variant='contained'
 					sx={{
 						background: '#13a749',
 						color: '#ffffff',

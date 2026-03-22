@@ -4,17 +4,24 @@ import { create } from 'zustand'
 import type { IUser } from './type'
 import { getCookie } from '@/shared/helpers/index'
 import { jwtDecode } from 'jwt-decode'
+import { getUser } from '../api/api'
 
 interface IUserStore extends IUser {
 	isAuthed: boolean
-	setAuth: () => void
+	loading: boolean
+	error: string | null
+	setAuth: () => Promise<void>
+	logout: () => void
+	fetchProfile: () => Promise<void>
 }
 
-const defaultState: Omit<IUserStore, 'setAuth'> = {
+const defaultState: Omit<IUserStore, 'setAuth' | 'logout' | 'fetchProfile'> = {
 	email: '',
 	user: {},
 	jwt_refresh: '',
 	isAuthed: false,
+	loading: false,
+	error: null,
 }
 
 const getInitialState = () => {
@@ -33,6 +40,8 @@ const getInitialState = () => {
 			user: decoded,
 			jwt_refresh: getCookie('refresh_token'),
 			isAuthed: true,
+			loading: false,
+			error: null,
 		}
 	} catch {
 		return defaultState
@@ -41,7 +50,7 @@ const getInitialState = () => {
 
 export const useUserStore = create<IUserStore>(set => ({
 	...getInitialState(),
-	setAuth: () => {
+	setAuth: async () => {
 		if (typeof window === 'undefined') {
 			set({ isAuthed: false })
 			return
@@ -57,5 +66,31 @@ export const useUserStore = create<IUserStore>(set => ({
 			user: decoded,
 			jwt_refresh: getCookie('refresh_token'),
 		})
+		// После установки авторизации загружаем полный профиль
+		const profile = await getUser()
+
+		if (profile) {
+			set({ user: profile })
+		}
+	},
+	logout: () => {
+		if (typeof window !== 'undefined') {
+			localStorage.removeItem('access_token')
+			document.cookie =
+				'refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+		}
+		set(defaultState)
+	},
+	fetchProfile: async () => {
+		set({ loading: true, error: null })
+		try {
+			const profile = await getUser()
+			if (profile) {
+				set({ user: profile, loading: false })
+			}
+		} catch (error) {
+			set({ error: 'Ошибка загрузки профиля', loading: false })
+			console.error('Error fetching profile:', error)
+		}
 	},
 }))
