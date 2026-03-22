@@ -1,67 +1,47 @@
+import { toast } from 'react-toastify'
 import { TestsStore } from './store'
 import { Test } from './types'
 import { apiController } from '@/shared/config/api/api'
+import type { IResponse } from '@/shared/config/api/api'
 
-export const getTests = async (psychologistId: string) => {
+export const createTest = async (e: any) => {
+	try {
+		const response = await apiController(undefined, 'POST', '/api/tests', e)
+	} catch (err) {
+		console.error(err)
+		toast.error('Не удалось создать тест')
+	}
+}
+
+export const getTests = async (
+	id: string,
+): Promise<IResponse<Test[]> | undefined> => {
 	try {
 		const response = await apiController<Test[]>(
 			undefined,
 			'GET',
-			`/api/tests?psychologist_id=${psychologistId}`,
+			`/api/tests?${id}`,
 		)
-		TestsStore.getState().setTests(response.data)
-	} catch (error) {
-		console.error('Ошибка загрузки тестов:', error)
+
+		return response
+	} catch (err) {
+		console.error(err)
+		toast.error('Не удалось получить тесты')
 	}
 }
 
-export const getTestById = async (id: string) => {
-	try {
-		const response = await apiController<Test>(undefined, 'GET', `/tests/${id}`)
-		return response.data
-	} catch (error) {
-		console.error('Ошибка загрузки теста:', error)
-		return null
-	}
-}
-
-export const createTest = async (testData: Omit<Test, 'id'>) => {
+export const getMyTest = async (
+	sessionId: string,
+): Promise<IResponse<Test> | undefined> => {
 	try {
 		const response = await apiController<Test>(
 			undefined,
-			'POST',
-			'/api/tests',
-			testData,
+			'GET',
+			`/api/client/session/${sessionId}`,
 		)
-		TestsStore.getState().addTest(response.data)
-	} catch (error) {
-		console.error('Ошибка создания теста:', error)
-	}
-}
-
-export const updateTest = async (id: string, data: Partial<Test>) => {
-	try {
-		const response = await apiController<Test>(
-			undefined,
-			'PUT',
-			`/tests/${id}`,
-			data,
-		)
-		TestsStore.getState().updateTest(id, response.data)
-	} catch (error) {
-		console.error('Ошибка обновления теста:', error)
-	}
-}
-
-export const deleteTest = async (id: string) => {
-	try {
-		const response = await apiController<void>(
-			undefined,
-			'DELETE',
-			`/tests/${id}`,
-		)
-		TestsStore.getState().deleteTest(id)
-	} catch (error) {
-		console.error('Ошибка удаления теста:', error)
+		return response
+	} catch (err) {
+		console.error(err)
+		toast.error('Не удалось получить тест')
 	}
 }

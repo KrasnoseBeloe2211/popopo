@@ -28,12 +28,14 @@ export const ScalesView = ({ scales }: { scales: IScale[] }) => {
 							<Typography variant='subtitle1' fontWeight='bold' mb={1}>
 								Уровни:
 							</Typography>
-							{scale.levels.map((level, index) => (
+							{scale.levels?.map((level, index) => (
 								<Box
 									key={level.id}
 									mb={2}
 									p={2}
-									bgcolor='#f5f5f5'
+									sx={theme => ({
+										backgroundColor: theme.palette.background.paper,
+									})}
 									borderRadius={1}
 								>
 									<Typography variant='body2' color='text.secondary' mb={1}>

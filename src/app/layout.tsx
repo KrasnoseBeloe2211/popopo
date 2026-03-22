@@ -43,7 +43,7 @@ export default function RootLayout({
 						<PrivateRoute>
 							<LayoutUI>{children}</LayoutUI>
 						</PrivateRoute>
-						<ToastContainer />
+						<ToastContainer  theme='colored'/>
 						<CssBaseline />
 					</ThemeProvider>
 				</AppRouterCacheProvider>

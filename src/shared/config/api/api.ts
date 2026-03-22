@@ -8,20 +8,22 @@ import type {
 } from 'axios'
 import { baseUrl } from '../../params'
 import axios from 'axios'
-interface IResponse<T> {
+export interface IResponse<T> {
 	data: T
-	succes: boolean
+	success: boolean
 	error?: string
 }
 
 const api = axios.create({ withCredentials: true })
 
 api.interceptors.request.use((config: any) => {
-	const access_token = localStorage.getItem('access_token')
-	if (access_token) {
-		config.headers = {
-			...config.headers,
-			Authorization: `Bearer ${access_token}`,
+	if (typeof window !== 'undefined') {
+		const access_token = localStorage.getItem('access_token')
+		if (access_token) {
+			config.headers = {
+				...config.headers,
+				Authorization: `Bearer ${access_token}`,
+			}
 		}
 	}
 	return config

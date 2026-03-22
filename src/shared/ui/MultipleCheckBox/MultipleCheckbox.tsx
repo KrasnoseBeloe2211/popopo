@@ -15,6 +15,7 @@ import {
 export const MultipleCheckbox = ({
 	data,
 	isDropped,
+	isSession = false,
 	scales,
 	question,
 	onChange,
@@ -22,18 +23,21 @@ export const MultipleCheckbox = ({
 	data: Option[]
 	scales: IScale[]
 	isDropped: boolean
+	isSession?: boolean
 	question: IQuestion
 	onChange: any
 }) => {
 	const handleDeleteOption = (id: string) => {
-		const updateOptions = data.filter((opt: Option) => opt.id !== id)
+		const updateOptions = data?.filter((opt: Option) => opt.id !== id) || []
 		onChange?.({ ...question, options: updateOptions })
 	}
 
 	const handleAnswerChange = (value: string, optionId: string) => {
-		const updateOptions = data.map((opt: Option) =>
-			opt.id === optionId ? { ...opt, text: value } : opt,
-		)
+		const updateOptions =
+			data?.map((opt: Option) => {
+				if (!opt?.id) return opt
+				return opt.id === optionId ? { ...opt, text: value } : opt
+			}) || []
 		onChange?.({ ...question, options: updateOptions })
 	}
 
@@ -42,52 +46,60 @@ export const MultipleCheckbox = ({
 		scaleId: string,
 		value: string,
 	) => {
-		const updateOptions = data.map((opt: Option) =>
-			opt.id === optionId
-				? { ...opt, weights: { ...opt.weights, [scaleId]: value } }
-				: opt,
-		)
+		const updateOptions =
+			data?.map((opt: Option) => {
+				if (!opt?.id) return opt
+				return opt.id === optionId
+					? { ...opt, weights: { ...(opt.weights || {}), [scaleId]: value } }
+					: opt
+			}) || []
 		onChange?.({ ...question, options: updateOptions })
 	}
 
 	return (
 		<Box>
-			{data.map((opt: Option) => (
+			{data?.map((opt: Option) => (
 				<Box key={opt.id}>
 					<Box display='flex' alignItems='flex-start' gap={1}>
 						<FormControlLabel
 							control={<Checkbox disabled={!isDropped} />}
 							label={
-								<TextField
-									size='small'
-									disabled={!isDropped}
-									label='Ответ'
-									value={opt.text}
-									onChange={e => handleAnswerChange(e.target.value, opt.id)}
-								/>
+								isSession ? (
+									<Typography>{opt.text}</Typography>
+								) : (
+									<TextField
+										size='small'
+										disabled={!isDropped}
+										label='Ответ'
+										value={opt.text}
+										onChange={e => handleAnswerChange(e.target.value, opt.id)}
+									/>
+								)
 							}
 						/>
-						<Button
-							onClick={e => {
-								e.stopPropagation()
-								handleDeleteOption(opt.id)
-							}}
-							disabled={!isDropped}
-							variant='outlined'
-							color='error'
-							sx={{ 
-								minWidth: '40px', 
-								width: '40px', 
-								height: '40px', 
-								borderRadius: '50%',
-								padding: 0,
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center'
-							}}
-						>
-							<Delete sx={{ width: '20px', height: '20px' }} />
-						</Button>
+						{isSession ? null : (
+							<Button
+								onClick={e => {
+									e.stopPropagation()
+									handleDeleteOption(opt.id)
+								}}
+								disabled={!isDropped}
+								variant='outlined'
+								color='error'
+								sx={{
+									minWidth: '40px',
+									width: '40px',
+									height: '40px',
+									borderRadius: '50%',
+									padding: 0,
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+								}}
+							>
+								<Delete sx={{ width: '20px', height: '20px' }} />
+							</Button>
+						)}
 					</Box>
 					<Accordion>
 						<AccordionSummary expandIcon={<ArrowDropDown />}>
@@ -119,7 +131,7 @@ export const MultipleCheckbox = ({
 							)}
 							{scales?.map((scale: IScale) => (
 								<TextField
-									value={opt.weights[scale.id]}
+									value={opt.weights?.[scale.id] || ''}
 									onChange={e =>
 										handleWeightChange(opt.id, scale.id, e.target.value)
 									}

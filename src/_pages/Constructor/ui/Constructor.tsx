@@ -3,7 +3,7 @@
 import { IQuestion, IScale } from '@/entities/test'
 import { createTest } from '@/entities/test/model/api'
 import { useUserStore } from '@/entities/user/model/store'
-import { apiController } from '@/shared/config/api/api'
+
 import { AddScale, QuestionConst, ScalesView } from '@/widjets'
 import { Box, Button } from '@mui/material'
 import { useState } from 'react'
@@ -15,7 +15,7 @@ export const Constructor = () => {
 	const request: any = {
 		psychologist_id: user.id,
 		title: 'qwery',
-		description: 'des',
+		description: 'deasdadadadasdasasdas',
 		schema: { scales: scales, questions: droppedItems },
 	}
 	return (

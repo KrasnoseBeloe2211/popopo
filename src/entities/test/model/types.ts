@@ -1,6 +1,7 @@
 export interface Test {
 	id: string
 	psychologist_id: string
+	counter: number
 	title: string
 	description: string
 	responses?: number
@@ -26,7 +27,6 @@ export interface Option {
 
 export interface ILevels {
 	id: string
-	label: string
 	score_from: number
 	score_to: number
 	text_client: string
@@ -34,9 +34,9 @@ export interface ILevels {
 }
 
 export interface IScale {
-	id: string
-	name: string
-	min: number
-	max: number
-	levels?: ILevels[]
+	id: string | ''
+	name: string | ''
+	min?: number | 0
+	max: number | 0
+	levels?: ILevels[] | []
 }

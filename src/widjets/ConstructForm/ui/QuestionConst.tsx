@@ -53,7 +53,14 @@ export const QuestionConst = ({
 						if (template) {
 							setDroppedItems((prev: IQuestion[]) => [
 								...prev,
-								{ ...template, id: `${v4().split('-')[1]}` },
+								{
+									...template,
+									id: v4(),
+									options: template.options?.map(opt => ({
+										...opt,
+										id: v4(),
+									})),
+								},
 							])
 							setIsDropped(true)
 						}

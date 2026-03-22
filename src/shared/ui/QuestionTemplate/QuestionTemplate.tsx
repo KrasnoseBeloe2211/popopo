@@ -23,6 +23,7 @@ interface QuestionTemplateProps {
 	onChange?: (value: IQuestion) => void
 	Deleted?: any
 	readOnly?: boolean
+	isSession?: boolean
 	isDropped?: boolean
 	questions?: IQuestion[]
 	scales?: IScale[]
@@ -34,22 +35,17 @@ export const QuestionTemplate = ({
 	Deleted,
 	scales,
 	questions,
+	isSession = false,
 	isDropped,
 	readOnly = false,
 }: QuestionTemplateProps) => {
-	const handleAddOption = (options: any) => {
-		const currentOpts = options || []
+	const handleAddOption = () => {
+		const currentOpts = question.options || []
 
 		onChange?.({
 			...question,
 			options: [...currentOpts, { id: v4(), text: '', weights: {} }],
 		})
-
-		// onChange?.({
-		// 	...question,
-		// 	options: [...options, { id: v4(), text: '', weights: {} }],
-		// })
-		const currentOptions = question.options
 	}
 	const handleDeleteQuestion = (id: string) => {
 		if (questions && Deleted) {
@@ -61,37 +57,49 @@ export const QuestionTemplate = ({
 	}
 
 	return (
-		<Box p={2} border='1px solid #ccc' borderRadius={1} sx={(theme)=>({backgroundColor:theme.palette.background.paper})} width='100%'>
+		<Box
+			p={2}
+			border='1px solid #ccc'
+			borderRadius={1}
+			sx={theme => ({ backgroundColor: theme.palette.background.paper })}
+			width='100%'
+		>
 			<Box marginY={'10px'} display={'flex'} gap={'10px'} alignItems={'center'}>
-				<TextField
-					disabled={!isDropped}
-					fullWidth
-					label='Текст вопроса'
-					value={question.text}
-					onChange={e => onChange?.({ ...question, text: e.target.value })}
-					size='small'
-				/>
-				<Button
-					onClick={e => {
-						e.stopPropagation()
-						handleDeleteQuestion(question.id)
-					}}
-					disabled={!isDropped}
-					variant='outlined'
-					color='error'
-					sx={{
-						minWidth: '40px',
-						width: '40px',
-						height: '40px',
-						borderRadius: '50%',
-						padding: 0,
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-					}}
-				>
-					<Delete sx={{ width: '20px', height: '20px' }} />
-				</Button>
+				{isSession ? (
+					<Typography variant='body1'>{question.text}</Typography>
+				) : (
+					<>
+						<TextField
+							disabled={!isDropped}
+							fullWidth
+							label='Текст вопроса'
+							value={question.text}
+							onChange={e => onChange?.({ ...question, text: e.target.value })}
+							size='small'
+						/>
+						<Button
+							onClick={e => {
+								e.stopPropagation()
+								handleDeleteQuestion(question.id)
+							}}
+							disabled={!isDropped}
+							variant='outlined'
+							color='error'
+							sx={{
+								minWidth: '40px',
+								width: '40px',
+								height: '40px',
+								borderRadius: '50%',
+								padding: 0,
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						>
+							<Delete sx={{ width: '20px', height: '20px' }} />
+						</Button>
+					</>
+				)}
 			</Box>
 			{question.type === 'single_choice' ? (
 				<Box
@@ -99,15 +107,12 @@ export const QuestionTemplate = ({
 					boxShadow={'4px 4px 8px 0px rgba(34, 60, 80, 0.2)'}
 				>
 					<SingleChoice
+						isSession={isSession}
 						question={question}
 						onChange={onChange}
 						scales={scales || []}
 						isDropped={isDropped || false}
-						data={
-							question.options || [
-								{ id: v4().split('-')[1], text: '', weights: {} },
-							]
-						}
+						data={question.options || []}
 					/>
 				</Box>
 			) : (
@@ -118,13 +123,10 @@ export const QuestionTemplate = ({
 					<MultipleCheckbox
 						question={question}
 						onChange={onChange}
+						isSession={isSession}
 						scales={scales || []}
 						isDropped={isDropped || false}
-						data={
-							question.options || [
-								{ id: v4().split('-')[1], text: '', weights: {} },
-							]
-						}
+						data={question.options || []}
 					/>
 				</Box>
 			)}
@@ -132,7 +134,7 @@ export const QuestionTemplate = ({
 				<Button
 					onClick={e => {
 						e.stopPropagation()
-						handleAddOption(question.options)
+						handleAddOption()
 					}}
 					disabled={!isDropped}
 					variant='contained'
