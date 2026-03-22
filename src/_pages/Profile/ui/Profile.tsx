@@ -6,6 +6,7 @@ import { ProfileSidebar, ProfileAbout, QRCodeModal } from '@/features/profile'
 import { useUserStore } from '@/entities/user/model/store'
 
 import { edit } from '../api/editApi'
+import { baseUrl } from '@/shared/params'
 export const Profile = () => {
 	const [about, setAbout] = useState('')
 	const [isQRModalOpen, setIsQRModalOpen] = useState(false)
@@ -137,7 +138,7 @@ export const Profile = () => {
 				psychologistData={{
 					photoUrl: user.photoUrl,
 					fullName: user.full_name,
-					publicUrl: `http://localhost:3000/visit/${user.id}`,
+					publicUrl: `${baseUrl}/visit/${user.id}`,
 				}}
 			/>
 		</>

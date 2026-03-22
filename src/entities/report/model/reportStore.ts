@@ -1,21 +1,24 @@
-import { create } from 'zustand';
-import { getReport, type FileChoice, type PersonChoice } from '../api/getReport';
+import { create } from 'zustand'
+import {
+	getReport,
+	type FileChoice,
+	type PersonChoice,
+	type IReportResponse,
+} from '../api/getReport'
 
 interface ReportState {
-	metrics: Record<string, number>;
-	summary: string;
-	loading: boolean;
-	error: string | null;
+	report: IReportResponse | null
+	loading: boolean
+	error: string | null
 	fetchReport: (
 		sessionId: string,
 		fileChoice?: FileChoice,
 		personChoice?: PersonChoice,
-	) => Promise<void>;
+	) => Promise<void>
 }
 
 export const useReportStore = create<ReportState>(set => ({
-	metrics: {},
-	summary: '',
+	report: null,
 	loading: false,
 	error: null,
 
@@ -24,24 +27,23 @@ export const useReportStore = create<ReportState>(set => ({
 		fileChoice = 'pdf',
 		personChoice = 'client',
 	) => {
-		set({ loading: true, error: null });
+		set({ loading: true, error: null })
 		try {
-			const res = await getReport(sessionId, fileChoice, personChoice);
+			const res = await getReport(sessionId, fileChoice, personChoice)
 
-			if (res.success && res.data) {
+			if (res && res.data) {
 				set({
-					metrics: res.data.metrics,
-					summary: res.data.summary,
+					report: res.data,
 					loading: false,
-				});
+				})
 			} else {
-				set({ error: res.error || 'Ошибка при загрузке отчёта', loading: false });
+				set({ error: 'Ошибка при загрузке отчёта', loading: false })
 			}
 		} catch (err) {
 			set({
 				error: err instanceof Error ? err.message : 'Неизвестная ошибка',
 				loading: false,
-			});
+			})
 		}
 	},
-}));
+}))

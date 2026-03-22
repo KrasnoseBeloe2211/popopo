@@ -61,7 +61,7 @@ export const Session = ({
 			payload,
 		)
 		toast.done('Тест пройден успешно')
-		router.push('/report/client')
+		router.push('/report/client/' + sessionId)
 	}
 
 	const handleFeedFormSuccess = () => {

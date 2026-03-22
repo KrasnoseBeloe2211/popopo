@@ -1,12 +1,14 @@
-import { apiController } from '@/shared/config/api/api';
-import type { Method } from 'axios';
+import { apiController } from '@/shared/config/api/api'
+import type { Method } from 'axios'
 
-export type FileChoice = 'docx' | 'pdf';
-export type PersonChoice = 'client' | 'expert';
+export type FileChoice = 'docx' | 'pdf'
+export type PersonChoice = 'client' | 'expert'
 
 export interface IReportResponse {
-	metrics: Record<string, number>;
-	summary: string;
+	conclusion: string
+	file_name: string
+	file_data: string
+	content_type: string
 }
 
 export const getReport = async (
@@ -14,11 +16,11 @@ export const getReport = async (
 	fileChoice: FileChoice = 'pdf',
 	personChoice: PersonChoice = 'client',
 ) => {
-	const endpoint = `/api/client/session/${sessionId}/result`;
+	const endpoint = `/api/client/session/${sessionId}/result`
 	const params = {
-		file_choice: fileChoice,
-		person_choice: personChoice,
-	};
+		file_type: fileChoice,
+		person_type: personChoice,
+	}
 
 	return await apiController<IReportResponse>(
 		undefined,
@@ -26,5 +28,5 @@ export const getReport = async (
 		endpoint,
 		undefined,
 		params,
-	);
-};
+	)
+}

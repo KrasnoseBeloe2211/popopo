@@ -12,7 +12,7 @@ export const generateSession = async (
 			`/api/tests/${test_id}/links`,
 		)
 		// return baseUrl + '/session/' + response.id
-		return 'http://localhost:3000' + '/session/' + response.id
+		return baseUrl + '/session/' + response.id
 	} catch (error) {
 		console.error(error)
 	}

@@ -3,7 +3,7 @@ import type { ILoginForm, IRegisterForm } from '../types/types'
 
 export const auth = async (e: ILoginForm) => {
 	const response = await apiController<ILoginForm>(
-		'http://26.142.149.241:8080',
+		undefined,
 		'POST',
 		'/api/login/access',
 		e,

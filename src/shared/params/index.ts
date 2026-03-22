@@ -1,1 +1,1 @@
-export const baseUrl = 'http://26.142.149.241:8082'
+export const baseUrl = 'https://inteam.tech'

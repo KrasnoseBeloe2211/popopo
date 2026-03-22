@@ -73,7 +73,7 @@ export const refreshToken = async (access_token: string | null) => {
 	}
 
 	const response: any = await apiController(
-		'http://26.142.149.241:8080',
+		undefined,
 		'POST',
 		'/api/login/refresh',
 		{
