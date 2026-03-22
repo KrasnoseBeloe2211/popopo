@@ -1,4 +1,11 @@
-// 'use client'
+'use client'
+import React from 'react'
+
+export default function page() {
+  return (
+    <div>page</div>
+  )
+}
 
 // import { useEffect } from 'react'
 // import { useReportStore } from '@/entities/report/model/reportStore'
