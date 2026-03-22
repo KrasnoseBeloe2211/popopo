@@ -104,19 +104,20 @@ export const Auth = () => {
 						variant='outlined'
 						{...register('password', { required: 'Поле обязательно' })}
 						sx={{
+							'&:-webkit-autofill': {
+								WebkitBoxShadow: '0 0 0px 1000px #2c2c2c inset',
+								WebkitTextFillColor: 'white',
+							},
 							'& .MuiOutlinedInput-root': {
 								borderRadius: 3,
 								color: 'white',
-								
+
 								'&::placeholder': {
 									color: 'white',
 									opacity: 1,
-									
-									
 								},
 								'&:hover fieldset': {
 									borderColor: '#13a749',
-									
 								},
 								'&.Mui-focused fieldset': {
 									borderColor: '#13a749',

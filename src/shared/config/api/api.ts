@@ -52,7 +52,7 @@ api.interceptors.response.use(
 				}
 				return api(originalRequest)
 			} catch (refreshError) {
-				window.location.href = '/auth'
+				window.location.href = '/login'
 				return Promise.reject(refreshError)
 			}
 		}
@@ -69,7 +69,7 @@ export const refreshToken = async (access_token: string | null) => {
 	const response: any = await apiController(
 		'http://26.142.149.241:8080',
 		'POST',
-		'/login/refresh',
+		'/api/login/refresh',
 		{
 			access_token: access_token,
 		},

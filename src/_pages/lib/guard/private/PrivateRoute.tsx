@@ -4,7 +4,7 @@ import { useUserStore } from '@/entities/user/model/store'
 import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-const publicPaths = ['/','/login', '/register']
+const publicPaths = ['/','/login', '/register', '/session']
 
 export const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 	const { isAuthed, setAuth } = useUserStore()

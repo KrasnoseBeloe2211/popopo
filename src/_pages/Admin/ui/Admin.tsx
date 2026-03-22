@@ -1,15 +1,19 @@
-import { Box, Table, TableCell, TableRow, Typography } from '@mui/material'
+'use client'
+import { AdminTableEntity, useUsersStore } from '@/entities/admin'
+
+import { Box, Typography } from '@mui/material'
+import { useEffect } from 'react'
 
 export const Admin = () => {
+	const { users, refetch } = useUsersStore()
+	useEffect(() => {
+		refetch()
+	}, [])
+
 	return (
 		<Box>
 			<Typography>Админ панель</Typography>
-			{/* ROLE_PORTAL_ADMIN */}
-			<Table>
-				<TableRow>
-					<TableCell></TableCell>
-				</TableRow>
-			</Table>
+			<Box></Box>
 		</Box>
 	)
 }
