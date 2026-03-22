@@ -64,7 +64,9 @@ export const QRCodeModal = ({ open, onClose, psychologistData }: QRCodeModalProp
 			onClose={onClose}
 			maxWidth="sm"
 			fullWidth
-			onEnter={handleOpen}
+			TransitionProps={{
+				onEnter: handleOpen,
+			}}
 			PaperProps={{
 				sx: {
 					background: 'linear-gradient(145deg, #0a0a0a 0%, #111111 100%)',
