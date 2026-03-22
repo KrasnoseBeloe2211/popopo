@@ -4,8 +4,7 @@ import { Box, Button, Typography, Grid } from '@mui/material'
 import BadgeIcon from '@mui/icons-material/Badge'
 import { ProfileSidebar, ProfileAbout, QRCodeModal } from '@/features/profile'
 import { useUserStore } from '@/entities/user/model/store'
-import { baseUrl } from '@/shared/params'
-import { apiController } from '@/shared/config/api/api'
+
 import { edit } from '../api/editApi'
 export const Profile = () => {
 	const [about, setAbout] = useState('')

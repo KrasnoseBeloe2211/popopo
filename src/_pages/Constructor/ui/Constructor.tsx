@@ -5,6 +5,7 @@ import { createTest } from '@/entities/test/model/api'
 import { useUserStore } from '@/entities/user/model/store'
 
 import { AddScale, QuestionConst, ScalesView } from '@/widjets'
+
 import { Box, Button } from '@mui/material'
 import { useState } from 'react'
 
@@ -20,6 +21,8 @@ export const Constructor = () => {
 	}
 	return (
 		<Box>
+		
+		
 			<AddScale setScales={setScales} scales={scales} />
 			<ScalesView scales={scales} />
 			<QuestionConst
