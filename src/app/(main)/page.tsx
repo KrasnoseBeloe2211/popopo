@@ -1,10 +1,10 @@
-import { Header } from '@/shared/ui/Header'
+import { HeaderWithUser } from '@/shared/ui/HeaderWithUser/HeaderWithUser'
 import { Hero } from '@/shared/ui/Hero'
 
 export default function Home() {
   return (
     <>
-      <Header />
+      <HeaderWithUser />
       <Hero />
     </>
   )
