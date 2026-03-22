@@ -8,14 +8,16 @@ import PersonIcon from '@mui/icons-material/Person'
 interface ProfileSidebarProps {
 	photoUrl: string
 	fullName: string
-	email: string
-	phone: string
+	id?: string
+	email?: string
+	phone?: string
 }
 
 export const ProfileSidebar = ({
 	photoUrl,
 	fullName,
 	email,
+	id,
 	phone,
 }: ProfileSidebarProps) => {
 	return (
@@ -40,7 +42,7 @@ export const ProfileSidebar = ({
 				}}
 			>
 				<Avatar
-					src={photoUrl}
+					src={photoUrl && photoUrl}
 					alt={fullName}
 					sx={{
 						width: 180,
@@ -51,7 +53,7 @@ export const ProfileSidebar = ({
 					}}
 				/>
 				<Typography
-					variant="h5"
+					variant='h5'
 					sx={{
 						fontWeight: 600,
 						color: '#ffffff',
@@ -61,7 +63,7 @@ export const ProfileSidebar = ({
 					{fullName}
 				</Typography>
 				<Typography
-					variant="body1"
+					variant='body1'
 					sx={{
 						color: '#13a749',
 						mt: 1,
@@ -99,7 +101,7 @@ export const ProfileSidebar = ({
 					</Box>
 					<Box>
 						<Typography
-							variant="caption"
+							variant='caption'
 							sx={{
 								color: '#666',
 								display: 'block',
@@ -108,7 +110,7 @@ export const ProfileSidebar = ({
 							ФИО
 						</Typography>
 						<Typography
-							variant="body2"
+							variant='body2'
 							sx={{
 								color: '#b3b3b3',
 								fontWeight: 500,
@@ -120,96 +122,100 @@ export const ProfileSidebar = ({
 				</Box>
 
 				{/* Email */}
-				<Box
-					sx={{
-						display: 'flex',
-						alignItems: 'center',
-						gap: '12px',
-					}}
-				>
+				{email && (
 					<Box
 						sx={{
-							width: 40,
-							height: 40,
-							borderRadius: '10px',
-							background: 'rgba(19, 167, 73, 0.1)',
 							display: 'flex',
 							alignItems: 'center',
-							justifyContent: 'center',
+							gap: '12px',
 						}}
 					>
-						<EmailIcon sx={{ color: '#13a749', fontSize: 20 }} />
-					</Box>
-					<Box>
-						<Typography
-							variant="caption"
+						<Box
 							sx={{
-								color: '#666',
-								display: 'block',
+								width: 40,
+								height: 40,
+								borderRadius: '10px',
+								background: 'rgba(19, 167, 73, 0.1)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
 							}}
 						>
-							Почта
-						</Typography>
-						<Typography
-							variant="body2"
-							sx={{
-								color: '#b3b3b3',
-								fontWeight: 500,
-							}}
-						>
-							{email}
-						</Typography>
+							<EmailIcon sx={{ color: '#13a749', fontSize: 20 }} />
+						</Box>
+						<Box>
+							<Typography
+								variant='caption'
+								sx={{
+									color: '#666',
+									display: 'block',
+								}}
+							>
+								Почта
+							</Typography>
+							<Typography
+								variant='body2'
+								sx={{
+									color: '#b3b3b3',
+									fontWeight: 500,
+								}}
+							>
+								{email}
+							</Typography>
+						</Box>
 					</Box>
-				</Box>
+				)}
 
 				{/* Телефон */}
-				<Box
-					sx={{
-						display: 'flex',
-						alignItems: 'center',
-						gap: '12px',
-					}}
-				>
+				{phone && (
 					<Box
 						sx={{
-							width: 40,
-							height: 40,
-							borderRadius: '10px',
-							background: 'rgba(19, 167, 73, 0.1)',
 							display: 'flex',
 							alignItems: 'center',
-							justifyContent: 'center',
+							gap: '12px',
 						}}
 					>
-						<PhoneIcon sx={{ color: '#13a749', fontSize: 20 }} />
-					</Box>
-					<Box>
-						<Typography
-							variant="caption"
+						<Box
 							sx={{
-								color: '#666',
-								display: 'block',
+								width: 40,
+								height: 40,
+								borderRadius: '10px',
+								background: 'rgba(19, 167, 73, 0.1)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
 							}}
 						>
-							Номер телефона
-						</Typography>
-						<Typography
-							variant="body2"
-							sx={{
-								color: '#b3b3b3',
-								fontWeight: 500,
-							}}
-						>
-							{phone}
-						</Typography>
+							<PhoneIcon sx={{ color: '#13a749', fontSize: 20 }} />
+						</Box>
+						<Box>
+							<Typography
+								variant='caption'
+								sx={{
+									color: '#666',
+									display: 'block',
+								}}
+							>
+								Номер телефона
+							</Typography>
+							<Typography
+								variant='body2'
+								sx={{
+									color: '#b3b3b3',
+									fontWeight: 500,
+								}}
+							>
+								{phone}
+							</Typography>
+						</Box>
 					</Box>
-				</Box>
+				)}
 			</Box>
 
 			<Divider sx={{ my: 3, borderColor: 'rgba(19, 167, 73, 0.3)' }} />
 
 			{/* Информация о том, что нельзя редактировать */}
-			<Box
+			{!id && <Box
 				sx={{
 					padding: '16px',
 					background: 'rgba(255, 167, 73, 0.05)',
@@ -218,7 +224,7 @@ export const ProfileSidebar = ({
 				}}
 			>
 				<Typography
-					variant="caption"
+					variant='caption'
 					sx={{
 						color: '#ffa749',
 						display: 'block',
@@ -229,15 +235,16 @@ export const ProfileSidebar = ({
 					ℹ️ Информация
 				</Typography>
 				<Typography
-					variant="caption"
+					variant='caption'
 					sx={{
 						color: '#b3b3b3',
 						lineHeight: 1.5,
 					}}
 				>
-					Почта, номер телефона и ФИО нельзя изменить. Эти данные закреплены за вашим аккаунтом.
+					Почта, номер телефона и ФИО нельзя изменить. Эти данные закреплены за
+					вашим аккаунтом.
 				</Typography>
-			</Box>
+			</Box>}
 		</Box>
 	)
 }

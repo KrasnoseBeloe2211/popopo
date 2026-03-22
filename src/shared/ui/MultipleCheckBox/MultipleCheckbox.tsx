@@ -46,11 +46,16 @@ export const MultipleCheckbox = ({
 		scaleId: string,
 		value: string,
 	) => {
+		// Преобразуем в число, пустое значение оставляем как 0
+		const numericValue = value === '' ? 0 : Number(value)
 		const updateOptions =
 			data?.map((opt: Option) => {
 				if (!opt?.id) return opt
 				return opt.id === optionId
-					? { ...opt, weights: { ...(opt.weights || {}), [scaleId]: value } }
+					? {
+							...opt,
+							weights: { ...(opt.weights || {}), [scaleId]: numericValue },
+						}
 					: opt
 			}) || []
 		onChange?.({ ...question, options: updateOptions })
@@ -131,7 +136,7 @@ export const MultipleCheckbox = ({
 							)}
 							{scales?.map((scale: IScale) => (
 								<TextField
-									value={opt.weights?.[scale.id] || ''}
+									value={opt.weights?.[scale.id] ?? ''}
 									onChange={e =>
 										handleWeightChange(opt.id, scale.id, e.target.value)
 									}
