@@ -22,7 +22,14 @@ export const HeaderWithUser = () => {
 		<AppBar
 			position="fixed"
 			elevation={0}
-			sx={{ background: 'transparent', padding: '16px 40px' }}
+			sx={{
+				background: 'transparent',
+				padding: '10px 40px',
+				top: 0,
+				left: 0,
+				right: 0,
+				zIndex: 1100,
+			}}
 		>
 			<Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
 				<Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
