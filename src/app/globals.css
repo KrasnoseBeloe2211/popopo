@@ -48,6 +48,22 @@ a {
   }
 }
 
+/* Fix autofill blue background on inputs */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+.MuiOutlinedInput-input:-webkit-autofill,
+.MuiOutlinedInput-input:-webkit-autofill:hover,
+.MuiOutlinedInput-input:-webkit-autofill:focus,
+.MuiOutlinedInput-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #1a1d24 inset !important;
+  box-shadow: 0 0 0 1000px #1a1d24 inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Report Page Styles */
 .report-page {
   padding: 32px 24px;

@@ -47,7 +47,7 @@ export const Auth = () => {
 						sx={{
 							position: 'absolute',
 							inset: 0,
-							backgroundColor: 'rgba(19, 167, 73, 0.85)',
+							background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(19,167,73,0.85) 30%, rgba(19,167,73,0.85) 70%, rgba(0,0,0,0.6) 100%)',
 						}}
 					/>
 					<Typography
@@ -104,14 +104,9 @@ export const Auth = () => {
 						variant='outlined'
 						{...register('password', { required: 'Поле обязательно' })}
 						sx={{
-							'&:-webkit-autofill': {
-								WebkitBoxShadow: '0 0 0px 1000px #2c2c2c inset',
-								WebkitTextFillColor: 'white',
-							},
 							'& .MuiOutlinedInput-root': {
 								borderRadius: 3,
 								color: 'white',
-
 								'&::placeholder': {
 									color: 'white',
 									opacity: 1,
@@ -125,6 +120,7 @@ export const Auth = () => {
 							},
 						}}
 					/>
+
 					<Button
 						type='submit'
 						fullWidth
